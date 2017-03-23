@@ -1,5 +1,8 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
 import cv2
 import sys
+import time
 #import numpy as np
 
 #transmitting faces to the neural network
@@ -8,13 +11,14 @@ def identification(face_image):
 
     #identificate the face_image
     aaaa =20
-
+time_ = time.clock()
+# python face_detect.py IMG_20170307_170844.jpg haarcascade_frontalface_default.xml
 # Get user supplied values
 imagePath = sys.argv[1]
-cascPath = sys.argv[2]
 
-# Create the haar cascade
-faceCascade = cv2.CascadeClassifier(cascPath)
+#cascade for detection
+#faceCascade = cv2.CascadeClassifier('/home/pi/Desktop/face_recog/haarcascade_frontalface_default.xml')
+faceCascade = cv2.CascadeClassifier('/home/pi/Desktop/face_recog/lbpcascade_frontalface.xml')
 
 # Read the image and resize it
 image = cv2.imread(imagePath)
@@ -40,7 +44,7 @@ print("Found {0} faces!".format(len(faces)))
 # Draw a rectangle around the faces
 for (x, y, w, h) in faces:
     # Make new image for detection
-    recog = image[y:y+int(h+r*h), x:x+int(w+w*r)]
+    recog = image[y:y+h, x:x+w]
     cv2.imshow("small", recog)      #here you see the image for the CNN
 
     #Detection in whole image
@@ -48,4 +52,5 @@ for (x, y, w, h) in faces:
 
 
 cv2.imshow("Faces found", image)
+print (time.clock()- time_)
 cv2.waitKey(0)
