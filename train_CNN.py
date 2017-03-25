@@ -55,8 +55,8 @@ model.compile(loss='binary_crossentropy',
 
 batch_size = 16
 nb_epoch = 30
-nb_train_samples = 283
-nb_validation_samples = 38
+nb_train_samples = 214
+nb_validation_samples = 27
 
 model.fit_generator(
         train_generator,
