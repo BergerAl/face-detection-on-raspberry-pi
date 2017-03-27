@@ -7,7 +7,7 @@ from keras.layers import Conv2D, MaxPooling2D, ZeroPadding2D
 from keras import optimizers
 
 
-img_width, img_height = 300, 300
+img_width, img_height = 150, 150
 
 train_data_dir = 'data/train'
 validation_data_dir = 'data/validation'
@@ -55,14 +55,14 @@ model.compile(loss='binary_crossentropy',
 
 batch_size = 16
 nb_epoch = 30
-nb_train_samples = 214
-nb_validation_samples = 27
+nb_train_samples = 214*4
+nb_validation_samples = 27*4
 
 model.fit_generator(
         train_generator,
-        steps_per_epoch=nb_train_samples,
+        steps_per_epoch=nb_train_samples/batch_size,
         epochs=nb_epoch,
         validation_data=validation_generator,
-        validation_steps=nb_validation_samples)
+        validation_steps=nb_validation_samples/batch_size)
 
 model.save_weights('models/basic_cnn_20_epochs.h5')
