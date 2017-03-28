@@ -9,10 +9,10 @@ from keras.preprocessing.image import ImageDataGenerator, array_to_img, img_to_a
 
 img_width, img_height = 150, 150
 
-train_data_dir = 'data/train'
-validation_data_dir = 'data/validation'
+train_data_dir = 'old_data/train'
+validation_data_dir = 'old_data/validation'
 
-classes_amount = 5
+classes_amount = 4
 
 # used to rescale the pixel values from [0, 255] to [0, 1] interval
 datagen = ImageDataGenerator(
@@ -73,8 +73,8 @@ model.compile(loss='binary_crossentropy',
 
 batch_size = 16
 nb_epoch = 30
-nb_train_samples = 924#96*5                # old_data == 283,data ==214
-nb_validation_samples = 360#48*5            # old_data == 38,data ==27
+nb_train_samples = 283*4                # old_data == 283,data ==214
+nb_validation_samples = 38*4            # old_data == 38,data ==27
 
 model.fit_generator(
         train_generator,
@@ -83,4 +83,4 @@ model.fit_generator(
         validation_data=validation_generator,
         validation_steps=nb_validation_samples / batch_size)
 
-model.save_weights('models/basic_cnn_30_epochs.h5')
+model.save_weights('models/basic_cnn_30_epochs_old_data.h5')
