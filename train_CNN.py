@@ -9,8 +9,8 @@ from keras.preprocessing.image import ImageDataGenerator, array_to_img, img_to_a
 
 img_width, img_height = 150, 150
 
-train_data_dir = 'old_data/train'
-validation_data_dir = 'old_data/validation'
+train_data_dir = 'data/train'
+validation_data_dir = 'data/validation'
 
 classes_amount = 4
 
@@ -83,4 +83,10 @@ model.fit_generator(
         validation_data=validation_generator,
         validation_steps=nb_validation_samples / batch_size)
 
-model.save_weights('models/basic_cnn_30_epochs_old_data.h5')
+# Save Model
+model_json = model.to_json()
+with open("models/basic_cnn_30_epochs_data.json", "w") as json_file:
+    json_file.write(model_json)
+
+#Save Weights
+model.save_weights('models/basic_cnn_30_epochs_data.h5')
