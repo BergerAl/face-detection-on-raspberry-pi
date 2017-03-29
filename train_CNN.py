@@ -4,10 +4,10 @@ from keras.models import Sequential
 from keras.layers import Activation, Dropout, Flatten, Dense
 from keras.preprocessing.image import ImageDataGenerator
 from keras.layers import Conv2D, MaxPooling2D, ZeroPadding2D
-from keras import optimizers
-from keras.preprocessing.image import ImageDataGenerator, array_to_img, img_to_array, load_img
+from keras.preprocessing.image import ImageDataGenerator
 
-img_width, img_height = 150, 150
+# Set parameters
+img_width, img_height = 100, 100
 
 train_data_dir = 'data/train'
 validation_data_dir = 'data/validation'
@@ -73,8 +73,8 @@ model.compile(loss='binary_crossentropy',
 
 batch_size = 16
 nb_epoch = 30
-nb_train_samples = 283*4                # old_data == 283,data ==214
-nb_validation_samples = 38*4            # old_data == 38,data ==27
+nb_train_samples = 214*4                # old_data == 283,data ==214
+nb_validation_samples = 27*4            # old_data == 38,data ==27
 
 model.fit_generator(
         train_generator,
