@@ -46,20 +46,20 @@ validation_generator = datagen.flow_from_directory(
 
 #Model
 model = Sequential()
-model.add(Conv2D(64, (3, 3), input_shape=(img_width, img_height, 3)))   #32
+model.add(Conv2D(32, (3, 3), input_shape=(img_width, img_height, 3)))   #32
 model.add(Activation('relu'))
 model.add(MaxPooling2D(pool_size=(2, 2)))
 
-model.add(Conv2D(64, (3, 3)))       #32
+model.add(Conv2D(32, (3, 3)))       #32
 model.add(Activation('relu'))
 model.add(MaxPooling2D(pool_size=(2, 2)))
 
-model.add(Conv2D(128, (3, 3)))      #64
+model.add(Conv2D(64, (3, 3)))      #64
 model.add(Activation('relu'))
 model.add(MaxPooling2D(pool_size=(2, 2)))
 
 model.add(Flatten())
-model.add(Dense(128))               #64
+model.add(Dense(64))               #64
 model.add(Activation('relu'))
 model.add(Dropout(0.5))
 model.add(Dense(classes_amount, activation='softmax'))
