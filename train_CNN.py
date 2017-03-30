@@ -7,7 +7,7 @@ from keras.layers import Conv2D, MaxPooling2D, ZeroPadding2D
 from keras.preprocessing.image import ImageDataGenerator
 
 # Set parameters
-img_width, img_height = 100, 100
+img_width, img_height = 200, 200
 
 train_data_dir = 'data/train'
 validation_data_dir = 'data/validation'
@@ -73,8 +73,8 @@ model.compile(loss='binary_crossentropy',
 
 batch_size = 16
 nb_epoch = 30
-nb_train_samples = 214*4                # old_data == 283,data ==214
-nb_validation_samples = 27*4            # old_data == 38,data ==27
+nb_train_samples = 214*classes_amount                # old_data == 283,data ==214
+nb_validation_samples = 27*classes_amount            # old_data == 38,data ==27
 
 model.fit_generator(
         train_generator,
