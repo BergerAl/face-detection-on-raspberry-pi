@@ -17,7 +17,7 @@ test_img = load_img('some_pics/IMG_20170307_170844.jpg', target_size=(200,200))
 test_img.show()
 image_as_array = img_to_array(test_img)
 image_as_array = image_as_array.reshape((1,) + image_as_array.shape)
-prediction = model.predict_proba(image_as_array, verbose=0)              # for vector output
+prediction = model.predict(image_as_array, verbose=1)              # for vector output
 #prediction = model.predict_classes(image_as_array)      # for classes output
 print ("Time:%.4f" %(time.clock()-time_))
 print prediction

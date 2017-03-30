@@ -89,8 +89,8 @@ model.add(Dense(classes_amount, activation='softmax'))
 #model.add(Dense(1))
 #model.add(Activation('sigmoid'))    #only for binary classes
 
-
-model.compile(loss='binary_crossentropy',
+# categorical_crossentropy for more that 2 classes. binary_crossentropy otherwise
+model.compile(loss='categorical_crossentropy',
               optimizer='rmsprop',
               metrics=['accuracy'])
 
