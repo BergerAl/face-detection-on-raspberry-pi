@@ -22,9 +22,11 @@ from keras.layers import Activation, Dropout, Flatten, Dense
 from keras.preprocessing.image import ImageDataGenerator
 from keras.layers import Conv2D, MaxPooling2D, ZeroPadding2D
 from keras.preprocessing.image import ImageDataGenerator
+from keras.preprocessing.image import array_to_img, img_to_array, load_img
+import time
 
 # Set parameters
-img_width, img_height = 200, 200
+img_width, img_height = 400, 400
 
 train_data_dir = 'data/train'
 validation_data_dir = 'data/validation'
@@ -58,7 +60,7 @@ train_generator = datagen.flow_from_directory(
 validation_generator = datagen.flow_from_directory(
         validation_data_dir,
         target_size=(img_width, img_height),
-        batch_size=32,
+        batch_size=16,
         class_mode='categorical')
 
 #Model
@@ -85,13 +87,13 @@ model.add(Flatten())
 model.add(Dense(64))               #64
 model.add(Activation('relu'))
 model.add(Dropout(0.5))
-model.add(Dense(classes_amount, activation='softmax'))
+model.add(Dense(int(classes_amount), activation='softmax'))
 #model.add(Dense(1))
 #model.add(Activation('sigmoid'))    #only for binary classes
 
 # categorical_crossentropy for more that 2 classes. binary_crossentropy otherwise
 model.compile(loss='categorical_crossentropy',
-              optimizer='rmsprop',
+              optimizer='rmsprop',              #rmsprop
               metrics=['accuracy'])
 
 batch_size = 16
@@ -113,3 +115,16 @@ with open("models/basic_cnn_30_epochs_data.json", "w") as json_file:
 
 #Save Weights
 model.save_weights('models/basic_cnn_30_epochs_data.h5')
+
+##### TEST
+
+time_ = time.clock()
+test_img = load_img('some_pics/640_leo_dicaprio_emma_watson.jpg', target_size=(img_width,img_height))
+#test_img = load_img('data/validation/Emma_Watson/pic_294.jpg', target_size=(200,200))
+test_img.show()
+image_as_array = img_to_array(test_img)
+image_as_array = image_as_array.reshape((1,) + image_as_array.shape)
+prediction = model.predict(image_as_array)              # for vector output
+#prediction = model.predict_classes(image_as_array)      # for classes output
+print ("Time:%.4f" %(time.clock()-time_))
+print prediction
