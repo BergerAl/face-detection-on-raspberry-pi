@@ -22,8 +22,8 @@ import sys
 import time
 import os
 
-Person = 'Anne_Hathaway'
-imagePath = 'data/validation/' + Person +'/'
+Person = 'Tom_Hardy'
+imagePath = 'old_data/validation/' + Person +'/'
 
 faceCascade = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
 
@@ -52,15 +52,11 @@ for filename in os.listdir(imagePath):
         flags = cv2.CASCADE_SCALE_IMAGE
     )
     # Draw a rectangle around the faces
+    i = 0                               #simple face count
     for (x, y, w, h) in faces:
         # Make new image for detection
-
-        recog = image[y:y+h, x:x+w]
+        boundary_factor = 0.1
+        recog = image[y-int(boundary_factor*h):y+int(h*(1+boundary_factor)), x-int(boundary_factor*w):x+int(w*(1+boundary_factor))]
         #cv2.imshow("small", recog)      #here you see the image for the CNN
-        cv2.imwrite(Person + "/" + filename, recog)
-
-        #Detection in whole image
-        #cv2.rectangle(image, (x, y), (x+w, y+h), (0, 255, 0), 2)
-        #cv2.imshow("Faces found", image)
-
-    #cv2.waitKey(0)
+        cv2.imwrite(Person + "/"+ str(i) + filename, recog)
+        i += 1

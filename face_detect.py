@@ -34,8 +34,8 @@ time_ = time.clock()
 imagePath = sys.argv[1]
 
 #cascade for detection
-#faceCascade = cv2.CascadeClassifier('/home/pi/Desktop/face_recog/haarcascade_frontalface_default.xml')
-faceCascade = cv2.CascadeClassifier('/home/pi/Desktop/face_recog/lbpcascade_frontalface.xml')
+faceCascade = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
+#faceCascade = cv2.CascadeClassifier('/home/pi/Desktop/face_recog/lbpcascade_frontalface.xml')
 
 # Read the image and resize it
 image = cv2.imread(imagePath)
@@ -60,9 +60,11 @@ print("Found {0} faces!".format(len(faces)))
 
 # Draw a rectangle around the faces
 for (x, y, w, h) in faces:
+    print (x, y, w, h)
     # Make new image for detection
-    recog = image[y:y+h, x:x+w]
+    recog = image[y-h/2:y+h*3/2, x-w/2:x+w*3/2]
     cv2.imshow("small", recog)      #here you see the image for the CNN
+    cv2.imwrite('test.jpg', recog)
 
     #Detection in whole image
     cv2.rectangle(image, (x, y), (x+w, y+h), (0, 255, 0), 2)
