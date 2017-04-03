@@ -60,9 +60,9 @@ print("Found {0} faces!".format(len(faces)))
 
 # Draw a rectangle around the faces
 for (x, y, w, h) in faces:
-    print (x, y, w, h)
+    boundary_factor = 0.1
     # Make new image for detection
-    recog = image[y-h/2:y+h*3/2, x-w/2:x+w*3/2]
+    recog = image[y-int(boundary_factor*h):y+int(h*(1+boundary_factor)), x-int(boundary_factor*w):x+int(w*(1+boundary_factor))]
     cv2.imshow("small", recog)      #here you see the image for the CNN
     cv2.imwrite('test.jpg', recog)
 
