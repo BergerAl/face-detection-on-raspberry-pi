@@ -50,12 +50,11 @@ GPIO.setup(12, GPIO.OUT)                                #Yellow LED
 camera= picamera.PiCamera()
 camera.resolution = (1000,1000)
 
-print ("Everything is loaded correctly")
+print ("Everything was loaded as intended")
+
 while True:
     input_state = GPIO.input(21)
     if input_state == False:
-        #time_ = time.time()
-        print ("Starting to capture. Get ready")
         GPIO.output(12, 1)
         date = time.strftime("%Y-%m-%d_%H:%M:%S")
 
@@ -82,14 +81,14 @@ while True:
             #flags = cv2.cv.CV_HAAR_SCALE_IMAGE
             flags = cv2.CASCADE_SCALE_IMAGE
         )
-        if faces:
+        if faces == ():
+            print ("No faces found")
+            continue
+        else:
             for (x, y, w, h) in faces:
                 boundary_factor = 0.1
                 # Make new image for detection
                 recog = image[y-int(boundary_factor*h):y+int(h*(1+boundary_factor)), x-int(boundary_factor*w):x+int(w*(1+boundary_factor))]
-            
-        else:
-            print ("No face detected")
 
         ### Analysing in CNN ###
         recog = cv2.resize(recog, (150,150))
@@ -99,7 +98,5 @@ while True:
         GPIO.output(12, 0)
         GPIO.output(16, 1)
         print prediction
-        #print ("time needed: %.4f" %(time.time()-time_))
         time.sleep(5)
         GPIO.output(16, 0)
-        recog = []
