@@ -40,7 +40,7 @@ model.load_weights("models/basic_cnn_30_epochs_data.h5")
 
 #Input with Button and Output an LED Signal
 GPIO.setmode(GPIO.BCM)
-GPIO=.setwarnings(False)
+GPIO.setwarnings(False)
 GPIO.setup(21, GPIO.IN, pull_up_down=GPIO.PUD_UP)       #Switch
 GPIO.setup(16, GPIO.OUT)                                #Green LED
 GPIO.setup(20, GPIO.OUT)                                #Red LED
@@ -50,11 +50,14 @@ GPIO.setup(12, GPIO.OUT)                                #Yellow LED
 camera= picamera.PiCamera()
 camera.resolution = (1000,1000)
 
+print ("Everything is loaded correctly")
 while True:
     input_state = GPIO.input(21)
     if input_state == False:
+        #time_ = time.time()
+        print ("Starting to capture. Get ready")
         GPIO.output(12, 1)
-        date = time-strftime("%Y-%m-%d_%H:%M:%S")
+        date = time.strftime("%Y-%m-%d_%H:%M:%S")
 
         #camera.start_preview()
         time.sleep(1)
@@ -63,7 +66,7 @@ while True:
 
         ### Start processing ###
         # Read the image and resize it
-        image = cv2.imread(imagePath)
+        image = cv2.imread('python_pictures/' + date + '.jpg')
         r = 600.0/image.shape[1]
         dim = (600, int(image.shape[0]*r))
         image = cv2.resize(image, dim, interpolation = cv2.INTER_AREA)
@@ -86,11 +89,12 @@ while True:
 
         ### Analysing in CNN ###
         recog = cv2.resize(recog, (150,150))
-        image_as_array = img_to_array(test_img)
+        image_as_array = img_to_array(recog)
         image_as_array = image_as_array.reshape((1,) + image_as_array.shape)
         prediction = model.predict(image_as_array)
         GPIO.output(12, 0)
         GPIO.output(16, 1)
         print prediction
+        #print ("time needed: %.4f" %(time.time()-time_))
         time.sleep(5)
         GPIO.output(16, 0)
