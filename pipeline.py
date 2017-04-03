@@ -82,10 +82,14 @@ while True:
             #flags = cv2.cv.CV_HAAR_SCALE_IMAGE
             flags = cv2.CASCADE_SCALE_IMAGE
         )
-        for (x, y, w, h) in faces:
-            boundary_factor = 0.1
-            # Make new image for detection
-            recog = image[y-int(boundary_factor*h):y+int(h*(1+boundary_factor)), x-int(boundary_factor*w):x+int(w*(1+boundary_factor))]
+        if faces:
+            for (x, y, w, h) in faces:
+                boundary_factor = 0.1
+                # Make new image for detection
+                recog = image[y-int(boundary_factor*h):y+int(h*(1+boundary_factor)), x-int(boundary_factor*w):x+int(w*(1+boundary_factor))]
+            
+        else:
+            print ("No face detected")
 
         ### Analysing in CNN ###
         recog = cv2.resize(recog, (150,150))
@@ -98,3 +102,4 @@ while True:
         #print ("time needed: %.4f" %(time.time()-time_))
         time.sleep(5)
         GPIO.output(16, 0)
+        recog = []
