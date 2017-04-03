@@ -39,7 +39,6 @@ faceCascade = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
 
 # Read the image and resize it
 image = cv2.imread(imagePath)
-
 r = 600.0/image.shape[1]
 dim = (600, int(image.shape[0]*r))
 image = cv2.resize(image, dim, interpolation = cv2.INTER_AREA)
