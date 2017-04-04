@@ -22,6 +22,8 @@ from keras.layers import Activation, Dropout, Flatten, Dense
 from keras.preprocessing.image import ImageDataGenerator
 from keras.layers import Conv2D, MaxPooling2D, ZeroPadding2D
 from keras.preprocessing.image import array_to_img, img_to_array, load_img
+from keras.callbacks import EarlyStopping
+from keras.optimizers import SGD
 import time
 
 # Set parameters
@@ -86,14 +88,20 @@ model.add(Flatten())
 model.add(Dense(64))               #64
 model.add(Activation('relu'))
 model.add(Dropout(0.5))
-model.add(Dense(int(classes_amount), activation='softmax'))     #Output dimension
+model.add(Dense(int(classes_amount))     #Output dimension
+model.add(Activation('softmax'))
 #model.add(Dense(1))
 #model.add(Activation('sigmoid'))    #only for binary classes
+
+
+#sgd = SGD(lr=0.1, decay=1e-6, momentum=0.9, nesterov=True)
 
 # categorical_crossentropy for more that 2 classes. binary_crossentropy otherwise
 model.compile(loss='categorical_crossentropy',
               optimizer='rmsprop',              #rmsprop
               metrics=['accuracy'])
+
+early_stop = EarlyStopping(monitor='val_loss', patience=4)
 
 batch_size = 16
 nb_epoch = 30
@@ -105,7 +113,8 @@ model.fit_generator(
         steps_per_epoch=nb_train_samples / batch_size,
         epochs=nb_epoch,
         validation_data=validation_generator,
-        validation_steps=nb_validation_samples / batch_size)
+        validation_steps=nb_validation_samples / batch_size,
+        callbacks=[early_stop])
 
 # Save Model
 model_json = model.to_json()
