@@ -86,7 +86,7 @@ model.add(Flatten())
 model.add(Dense(64))               #64
 model.add(Activation('relu'))
 model.add(Dropout(0.5))
-model.add(Dense(int(classes_amount), activation='softmax'))
+model.add(Dense(int(classes_amount), activation='softmax'))     #Output dimension
 #model.add(Dense(1))
 #model.add(Activation('sigmoid'))    #only for binary classes
 
@@ -98,7 +98,7 @@ model.compile(loss='categorical_crossentropy',
 batch_size = 16
 nb_epoch = 30
 nb_train_samples = 232*classes_amount                # old_data == 283,data ==214
-nb_validation_samples = 29*classes_amount            # old_data == 38,data ==27
+nb_validation_samples = 28*classes_amount            # old_data == 38,data ==27
 
 model.fit_generator(
         train_generator,
