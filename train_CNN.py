@@ -22,6 +22,7 @@ from keras.layers import Activation, Dropout, Flatten, Dense
 from keras.preprocessing.image import ImageDataGenerator
 from keras.layers import Conv2D, MaxPooling2D, ZeroPadding2D
 from keras.preprocessing.image import array_to_img, img_to_array, load_img
+#from keras.utils.np_utils import to_categorical
 from keras.callbacks import EarlyStopping
 from keras.optimizers import SGD
 import time
@@ -56,13 +57,13 @@ train_generator = datagen.flow_from_directory(
         train_data_dir,
         target_size=(img_width, img_height),
         batch_size=16,
-        class_mode='categorical')
+        class_mode='binary')
 
 validation_generator = datagen.flow_from_directory(
         validation_data_dir,
         target_size=(img_width, img_height),
         batch_size=16,
-        class_mode='categorical')
+        class_mode='binary')
 
 #Model
 model = Sequential()
