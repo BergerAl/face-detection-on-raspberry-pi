@@ -13,13 +13,13 @@ model.load_weights("models/basic_cnn_30_epochs_data.h5")
 
 
 #Test image
-time_ = time.clock()
-test_img = load_img('some_pics/Leo.jpg', target_size=(150,150))
+time_ = time.time()
+test_img = load_img('some_pics/Ron.jpg', target_size=(150,150))
 #test_img = load_img('data/validation/Emma_Watson/pic_294.jpg', target_size=(200,200))
 test_img.show()
 image_as_array = img_to_array(test_img)
 image_as_array = image_as_array.reshape((1,) + image_as_array.shape)
 prediction = model.predict(image_as_array)              # for vector output
 #prediction = model.predict_classes(image_as_array)      # for classes output
-print ("Time:%.4f" %(time.clock()-time_))
+print ("Time:%.4f" %(time.time()-time_))
 print prediction
