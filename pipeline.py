@@ -82,7 +82,10 @@ while True:
             flags = cv2.CASCADE_SCALE_IMAGE
         )
         if faces == ():
+            GPIO.output(20, 1)
             print ("No faces found")
+            time.sleep(3)
+            GPIO.output(20, 0)
             continue
         else:
             for (x, y, w, h) in faces:
