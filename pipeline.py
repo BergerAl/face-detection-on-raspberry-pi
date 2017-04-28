@@ -22,6 +22,7 @@ import time
 import picamera
 import cv2
 import sys
+from numpy import arange
 from keras.models import model_from_json
 from keras.preprocessing.image import array_to_img, img_to_array, load_img
 
@@ -43,6 +44,20 @@ class face_detect():
     def __init__(self, runtime_after_detection):
         self.runtime_after_detection = runtime_after_detection
         self.model_done = False
+
+    def name_assignment(self, prediction_array):
+        person_name = 'Not a known person'
+        name_list = ['Anne Hathaway', 'Emma Watson', 'Leonardo Dicaprio', 'Tom Hardy']
+
+        for i in arange(len(name_list)):
+            if prediction_array[0,i]>=0.9:
+                person_name = name_list[i]
+            else:
+                pass
+        return person_name
+
+    def sending_on_phone(self, image, person_list):
+        asdasd
         
 
     def load_libs_and_model(self):
@@ -98,9 +113,11 @@ class face_detect():
                 GPIO.output(20, 0)
 
             else:
+                person_list = []
                 for (x, y, w, h) in faces:
+                    
                     boundary_factor = 0.1
-                    # Make new image for detection
+                    # Extracting face from image
                     recog = image[y-int(boundary_factor*h):y+int(h*(1+boundary_factor)), x-int(boundary_factor*w):x+int(w*(1+boundary_factor))]
                     ### Analysing in CNN ###
                     recog = cv2.resize(recog, (150,150))
@@ -108,10 +125,14 @@ class face_detect():
                     image_as_array = image_as_array.reshape((1,) + image_as_array.shape)
                     #need a bigger array or something
                     prediction = self.model.predict(image_as_array)
+                    print prediction
+                    person_list.append(self.name_assignment(prediction))
                     
+                print person_list
+                self.sending_on_phone(image, person_list)
                 GPIO.output(12, 0)
                 GPIO.output(16, 1)
-                print prediction
+                person_list = []
                 #send prediction to phone
                 
                 time.sleep(5)
