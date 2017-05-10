@@ -13,7 +13,7 @@
 #limitations under the License.
 
 #The above copyright notice and this permission notice shall be
-#included in all copies or substantial portions of the Software.
+#included in all copies or substantial portions of the Software
 
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
@@ -56,10 +56,37 @@ class face_detect():
                 pass
         return person_name
 
-    def sending_on_phone(self, image, person_list):
-        asdasd
+    def sending_on_phone(self, image_name, person_list):
+        from smtplib         import SMTP_SSL
+        from email.mime.image import MIMEImage
+        from email.mime.multipart import MIMEMultipart
         
+        #logindata
+        login, password = 'sender_email@gmx.de', 'password'
+        recipients = ['recipient_email']
 
+        #Msg
+        msg = MIMEMultipart()
+
+        msg['Subject'] = '%s is at the door' %(", ".join(person_list))
+        msg['From'] = 'sender_email@gmx.de'
+        msg['To'] = ", ".join(recipients)
+
+
+        fp = open(image_name, 'rb')
+        face = MIMEImage(fp.read())
+        fp.close()
+        msg.attach(face)
+
+        #send it via gmx smtp
+        s = SMTP_SSL('mail.gmx.net', 465, timeout=10)
+        s.set_debuglevel(1)
+        try:
+            s.login(login, password)
+            s.sendmail(msg['From'], recipients, msg.as_string())
+        finally:
+            s.quit()
+        
     def load_libs_and_model(self):
         
 
@@ -90,7 +117,8 @@ class face_detect():
 
             ### Start processing ###
             # Read the image and resize it
-            image = cv2.imread('python_pictures/' + date + '.jpg')
+            image_name = 'python_pictures/' + date + '.jpg'
+            image = cv2.imread(image_name)
             r = 600.0/image.shape[1]
             dim = (600, int(image.shape[0]*r))
             image = cv2.resize(image, dim, interpolation = cv2.INTER_AREA)
@@ -129,11 +157,10 @@ class face_detect():
                     person_list.append(self.name_assignment(prediction))
                     
                 print person_list
-                self.sending_on_phone(image, person_list)
+                self.sending_on_phone(image_name, person_list)
                 GPIO.output(12, 0)
                 GPIO.output(16, 1)
                 person_list = []
-                #send prediction to phone
                 
                 time.sleep(5)
                 GPIO.output(16, 0)
